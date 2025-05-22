@@ -1,0 +1,6 @@
+# Bỏ file tạm của Python
+__pycache__/
+*.pyc
+
+# Bỏ file hệ điều hành macOS
+.DS_Store
