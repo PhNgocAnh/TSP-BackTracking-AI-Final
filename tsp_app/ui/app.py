@@ -218,7 +218,7 @@ class TSPApp:
                 with_labels=True,
                 font_size=12,
                 font_weight='bold',
-                edge_color='back',
+                edge_color='black',
                 alpha=0.7)
         
         self.ax1.set_title("Đồ thị TSP ", fontsize=12, fontweight='bold')
