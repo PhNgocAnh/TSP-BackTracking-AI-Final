@@ -9,6 +9,7 @@ from matplotlib.figure import Figure
 
 
 from backtracking.tsp_solver import tsp_backtracking
+from backtracking.tsp_solver import get_recommended_time_limit
 # from backtracking_with_bound.tsp_backtracking_bound import tsp_backtracking_with_bound
 
 class TSPApp:
@@ -17,10 +18,10 @@ class TSPApp:
         self.root.title("TSP Solver")
         self.root.geometry("1200x700")
 
-        self.cities = []
+        self.cities = [] 
         self.dist = []
         self.coord_entries = []
-        self.result_text = tk.StringVar()
+        self.result_text = tk.StringVar() 
 
         self.setup_ui()
     
@@ -166,8 +167,8 @@ class TSPApp:
         for x_entry, y_entry in self.coord_entries:
             x_entry.delete(0, tk.END)
             y_entry.delete(0, tk.END)
-            x_entry.insert(0, str(random.randint(10, 50)))
-            y_entry.insert(0, str(random.randint(10, 50)))
+            x_entry.insert(0, str(random.randint(50, 100)))
+            y_entry.insert(0, str(random.randint(50, 100)))
         
         # Update the original graph
         coords = self.read_coords() # Đọc tọa độ từ các ô nhập
@@ -214,9 +215,9 @@ class TSPApp:
         # Draw the graph
         nx.draw(G, pos, ax=self.ax1, 
                 node_color='lightcoral', 
-                node_size=500,
+                node_size=350,
                 with_labels=True,
-                font_size=12,
+                font_size=10,
                 font_weight='bold',
                 edge_color='black',
                 alpha=0.7)
@@ -250,14 +251,14 @@ class TSPApp:
         # Draw all nodes
         nx.draw_networkx_nodes(G, pos, ax=self.ax2,
                               node_color='lightgreen',
-                              node_size=700,  # Larger nodes
+                              node_size=350,  
                               edgecolors='darkgreen',
                               linewidths=2)
         
         # Draw the path edges with arrows
         nx.draw_networkx_edges(G, pos, ax=self.ax2,
                               edge_color='red',
-                              width=4,  # Thicker arrows
+                              width=3,  # Thicker arrows
                               alpha=0.8,
                               arrows=True,
                               arrowsize=25,  # Larger arrow heads
@@ -265,7 +266,7 @@ class TSPApp:
         
         # Draw labels with larger font
         nx.draw_networkx_labels(G, pos, ax=self.ax2,
-                               font_size=14,  # Larger font
+                               font_size=12,  
                                font_weight='bold',
                                font_color='white')
         
@@ -276,15 +277,22 @@ class TSPApp:
 
     def solve_tsp(self):
         self.cities = self.read_coords()
+        n = len(self.cities)
+        
         if self.cities is None:
             return
+        
+        time_limit = get_recommended_time_limit(n)  
 
-        if len(self.cities) > 10:
-            messagebox.showwarning(
-                "Lưu ý",
-                "Thuật toán Backtracking có thể chạy chậm nếu có quá nhiều thành phố.\n"
-                "Sẽ tự động dừng sau 5 giây nếu quá lâu."
+        if n > 10:
+            # Hỏi người dùng có muốn tiếp tục không
+            result = messagebox.askyesno(
+                "Cảnh báo",
+                f"Với {n} thành phố, thuật toán có thể chạy rất lâu ({time_limit}s).\n"
+                "Bạn có muốn tiếp tục không?"
             )
+            if not result:
+                return
 
         self.compute_distance_matrix() # Tính toán ma trận khoảng cách
         self.draw_original_graph() # Nối các thành phố với nhau
@@ -294,16 +302,16 @@ class TSPApp:
         self.result_text_widget.insert(tk.END, "Đang tính toán...\n")
         self.root.update()
 
-        start_time = time.time()
+        start_time = time.time() # Thời gian bắt đầu
         
         try:
-            cost, path, call_count = tsp_backtracking(self.dist)
+            cost, path, call_count, cycle_count = tsp_backtracking(self.dist,time_limit=time_limit)
         except Exception as e:
             self.result_text_widget.delete(1.0, tk.END) # 
             self.result_text_widget.insert(tk.END, f"Lỗi: {str(e)}")
             return
         
-        end_time = time.time()
+        end_time = time.time() # Thời gian kết thúc
 
         # Clear and update results
         self.result_text_widget.delete(1.0, tk.END)
@@ -326,7 +334,7 @@ class TSPApp:
                     wrapped_path += " ➜\n"
                 else:
                     # Last line - add return arrow to start
-                    if len(path) > 1:
+                    if len(path) > 1 and path[-1] != path[0] :
                         wrapped_path += f" ➜ {path[0]} "
 
             result_text = f"""════════════ KẾT QUẢ ════════════
@@ -338,6 +346,8 @@ Chu trình tối ưu:
 
 Thời gian thực thi: {round(end_time - start_time, 4)} giây
 Số lần gọi đệ quy: {call_count:,}
+Số chu trình hợp lệ tìm được: {cycle_count:,}
+═══════════════════════════════
 
 """
             
