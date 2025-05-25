@@ -62,11 +62,11 @@ def get_recommended_time_limit(n):
     Đề xuất thời gian giới hạn phù hợp dựa trên số thành phố
     """
     if n <= 10:
-        return 5
+        return 10
     elif n <= 12:
         return 180
     elif n <= 15:
-        return 300
+        return 300  # 5 phút
     elif n <= 18:
         return 600  # 10 phút 
     else:

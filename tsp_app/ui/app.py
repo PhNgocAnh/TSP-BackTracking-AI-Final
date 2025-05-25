@@ -282,7 +282,7 @@ class TSPApp:
         if self.cities is None:
             return
         
-        time_limit = get_recommended_time_limit(n)  
+        time_limit = get_recommended_time_limit(n) # Lấy thời gian giới hạn khuyến nghị
 
         if n > 10:
             # Hỏi người dùng có muốn tiếp tục không
@@ -305,7 +305,7 @@ class TSPApp:
         start_time = time.time() # Thời gian bắt đầu
         
         try:
-            cost, path, call_count, cycle_count = tsp_backtracking(self.dist,time_limit=time_limit)
+            cost, path, call_count, cycle_count = tsp_backtracking(self.dist,time_limit)
         except Exception as e:
             self.result_text_widget.delete(1.0, tk.END) # 
             self.result_text_widget.insert(tk.END, f"Lỗi: {str(e)}")
