@@ -16,22 +16,19 @@ def compute_distance_matrix(cities):
                 dist[i][j] = math.hypot(cities[i][0] - cities[j][0], cities[i][1] - cities[j][1])
     return dist
 
-# Backtracking + Branch & Bound
-def tsp_backtracking_branch_and_bound(dist, time_limit=5):
+# Backtracking + Branch & Bound (bỏ giới hạn thời gian)
+def tsp_backtracking_branch_and_bound(dist):
     n = len(dist)
     best_cost = float('inf')
     best_path = None
     visited = [False] * n
     path = [0]
     visited[0] = True
-    start_time = time.time()
     call_count = 0
 
     def backtrack(curr, curr_cost):
         nonlocal best_cost, best_path, call_count
         call_count += 1
-        if time.time() - start_time > time_limit:
-            return
         if curr_cost >= best_cost:
             return
         if len(path) == n:
@@ -78,20 +75,20 @@ def tsp_nearest_neighbor(dist):
     return cost, path, end - start
 
 # Hàm chạy so sánh
-def run_compare(n=20):
+def run_compare(n=15):
     print(f"\n=== SO SÁNH VỚI {n} THÀNH PHỐ ===")
     cities = generate_cities(n)
     dist = compute_distance_matrix(cities)
 
     # Backtracking
-    print("\n[1] Backtracking + Branch & Bound (time_limit = 5s):")
-    cost_bt, path_bt, time_bt, calls = tsp_backtracking_branch_and_bound(dist, time_limit=5)
+    print("\n[1] Backtracking + Branch & Bound (KHÔNG GIỚI HẠN THỜI GIAN):")
+    cost_bt, path_bt, time_bt, calls = tsp_backtracking_branch_and_bound(dist)
     if path_bt:
         print(f"→ Chi phí: {cost_bt:.2f}")
         print(f"→ Thời gian: {time_bt:.2f} giây")
         print(f"→ Số lần gọi đệ quy: {calls}")
     else:
-        print("→ Không tìm được lời giải trong thời gian giới hạn.")
+        print("→ Không tìm được lời giải.")
 
     # Nearest Neighbor
     print("\n[2] Nearest Neighbor (Heuristic):")
@@ -102,4 +99,5 @@ def run_compare(n=20):
 
 # Chạy thử
 if __name__ == "__main__":
-    run_compare(n=20)
+    run_compare(n=15)
+
