@@ -36,3 +36,14 @@
    - Nếu chu trình hợp lệ và có chi phí **thấp hơn hiện tại**, thì cập nhật kết quả.
 4. **Backtrack**: Quay lui để thử đường đi khác (bỏ đánh dấu thành phố vừa thăm).
 5. **Giới hạn thời gian**: Nếu thời gian thực thi vượt quá `time_limit`, thuật toán sẽ dừng để tránh treo máy.
+
+## 📥 Cách cài đặt
+
+1. **Tải mã nguồn** và **giải nén** vào thư mục bất kỳ trên máy của bạn.
+2. Mở thư mục bằng Visual Studio Code
+3. **Chạy file `main.py`** để khởi động ứng dụng:
+
+## 📝 Ghi chú
+- Thư mục `testcase` chứa các file thử nghiệm của nhóm.
+
+
