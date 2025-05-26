@@ -2,7 +2,7 @@
 
 **TSP (Travelling Salesman Problem)** 
 > Một người bán hàng cần đi qua tất cả các thành phố đúng một lần, rồi quay trở lại điểm xuất phát, sao cho tổng chi phí di chuyển là nhỏ nhất.
-Thuật toán **Quay lui (Backtracking)**
+**Thuật toán **Quay lui (Backtracking)**
 > Thuật toán quay lui giải quyết vấn đề bằng cách thử lần lượt các tùy chọn khác nhau.
 > Nếu một tùy chọn không mang lại hiệu quả hoặc dẫn đến ngõ cụt, giải thuật sẽ quay lại lựa chọn trước đó và thử một tùy chọn khác cho đến khi tìm thấy giải pháp hoặc tất cả các khả năng đã được sử dụng hết
 ---
